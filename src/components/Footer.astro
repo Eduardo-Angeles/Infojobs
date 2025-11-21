@@ -1,1 +1,13 @@
-<h1 class="my-96 block min-h-screen bg-gray-100">Este es un footer</h1>
+---
+import LinksColumns from "@components/LinksColumns.astro";
+import FollowUs from "@components/FollowUs.astro";
+import AdevintaInfo from "@components/AdevintaInfo.astro";
+---
+
+<footer class="mt-20 bg-[#F5F5F5] py-6 lg:py-10">
+  <section class="mx-auto w-full max-w-7xl px-4">
+    <LinksColumns />
+    <FollowUs />
+    <AdevintaInfo />
+  </section>
+</footer>
