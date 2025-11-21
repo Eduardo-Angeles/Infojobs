@@ -1,0 +1,70 @@
+---
+import SearchIcon from "@icons/Search.astro";
+
+const SHORTCUTS = [
+  { href: "/", label: "🗿 Sin experiencia" },
+  { href: "/", label: "🏦 Findes" },
+  { href: "/", label: "🤖 Practicas" },
+  { href: "/", label: "⌛️ Medio tiempo" },
+] as const;
+---
+
+<section class="max-w-7xl- mx-auto w-full px-4">
+  <div
+    class="bg-hero-pattern mx-auto w-full rounded-3xl bg-cover bg-center px-4 py-6"
+  >
+    <h1 class="pb-4 text-center text-2xl font-semibold text-black/80">
+      Tu carrera empieza aqui
+    </h1>
+    <search class="rounded-3xl bg-white p-4">
+      <form>
+        <div>
+          <select class="w-full border-b border-gray-300 py-4 text-gray-600">
+            <option value="" disabled selected>nivel de estudios</option>
+            <option value="1">Secundaria</option>
+            <option value="2">Bachillerato</option>
+            <option value="3">Grado Medio</option>
+          </select>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Estudio, puesto, empresa ..."
+            class="w-full border-b border-gray-300 py-4 text-gray-600"
+          />
+        </div>
+
+        <div class="mb-8">
+          <input
+            type="text"
+            placeholder="Provincia, ciudad ..."
+            class="w-full py-4 text-gray-600"
+          />
+        </div>
+
+        <button
+          class="bg-accent inline-flex w-full items-center justify-center gap-x-2 rounded-full px-4 py-2 text-lg font-medium text-white hover:saturate-150"
+        >
+          <SearchIcon />
+          Buscar ofertas
+        </button>
+      </form>
+    </search>
+
+    <footer>
+      <h5 class="pt-8 pb-4 text-center">
+        Explora trabajos que se adapten a ti
+      </h5>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        {
+          SHORTCUTS.map(({ href, label }) => (
+            <a class="text-primary rounded-full bg-white p-4" href={href}>
+              {label}
+            </a>
+          ))
+        }
+      </div>
+    </footer>
+  </div>
+</section>

@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+@theme {
+  /* Colors - usa --color-* */
+  --color-primary: #167db7;
+  --color-accent: #fe5230;
+  
+  /* Background images - usa --background-image-* */
+  --background-image-hero-pattern: url("/hero-pattern.webp");
+  
+  /* Fonts - usa --font-family-* */
+  /* --font-family-display: "Inter", sans-serif; */
+  
+  /* Spacing - usa --spacing-* */
+  /* --spacing-section: 5rem; */
+  
+  /* Breakpoints - usa --breakpoint-* */
+  /* --breakpoint-tablet: 768px; */
+}
