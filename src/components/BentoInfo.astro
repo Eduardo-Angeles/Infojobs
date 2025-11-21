@@ -30,16 +30,16 @@ const ARTICLES = [
   <div class="grid grid-cols-1 gap-4">
     {
       ARTICLES.map(({ class: className, title, contenId }) => (
-        <article class="aspect-square w-full">
-          <button
-            class:list={[
-              "flex h-full justify-start rounded-2xl p-4",
-              className,
-            ]}
-          >
-            <h4 class="text-left text-2xl font-medium text-pretty">{title}</h4>
-          </button>
-        </article>
+        <button
+          class:list={[
+            "flex aspect-square h-full w-full justify-start rounded-2xl p-4 transition hover:scale-105",
+            className,
+          ]}
+        >
+          <span class="text-left text-2xl font-medium text-pretty">
+            {title}
+          </span>
+        </button>
       ))
     }
   </div>
