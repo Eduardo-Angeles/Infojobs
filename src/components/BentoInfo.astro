@@ -1,46 +1,108 @@
 ---
 import SectionContainer from "@components/SectionContainer.astro";
+import Subtitle from "@components/Subtitle.astro";
 
 const ARTICLES = [
   {
-    title: "Que esperar de un proceso de seleccion",
-    contenId: "selection-process",
-    class: "bg-yellow-100 text-yellow-800",
+    title: "Qué esperar de un proceso de selección",
+    contentId: "selection-process",
+    class:
+      "bg-gradient-to-r from-[#fef6db] to-[#fce197] text-yellow-800 md:aspect-[16/8] md:col-span-2 md:row-span-1 h-full",
+    image: "/bento-info/selection-process.webp",
+    imageClass:
+      "w-full h-auto object-contain object-bottom md:h-auto md:w-auto md:object-right md:max-h-none",
+    link: "/", // 👈 EDITA AQUÍ: Agrega tu URL para "proceso de selección"
+    track: "blog_selection_process",
   },
   {
     title: "Los puestos emergentes que van a petarlo",
-    contenId: "emerging-jobs",
-    class: "bg-red-100 text-red-800",
+    contentId: "emergent-positions",
+    class:
+      "bg-gradient-to-r from-[#ffd2d2] to-[#f9b395] text-red-800 md:col-start-3 md:row-span-2 md:h-full",
+    image: "/bento-info/emergent-positions.webp",
+    imageClass:
+      "w-full h-full object-cover object-[center_30%] md:object-center",
+    link: "/", // 👈 EDITA AQUÍ: Agrega tu URL para "puestos emergentes"
+    track: "blog_emerging_jobs",
   },
   {
-    title: "La opinion de las empresas, de nuestra comunidad",
-    contenId: "company-opinion",
-    class: "bg-sky-300 text-sky-800",
+    title: "Las opinión de las empresas",
+    contentId: "company-opinion",
+    class: "bg-sky-800 text-sky-100 md:h-row-span-1",
+    image: "/bento-info/company-opinion.webp",
+    imageClass: "w-full h-full object-cover",
+    link: "/", // 👈 EDITA AQUÍ: URL de TikTok (ya configurada)
+    track: "blog_companies_opinions",
   },
   {
-    title: "¿Sin experiencia? destaca en las entrevistas",
-    contenId: "no-experience",
-    class: "bg-green-100 text-green-800",
+    title: "¿Sin experiencia? Destaca en las entrevistas",
+    contentId: "no-experience",
+    class:
+      "bg-gradient-to-r from-[#e6f6ee] to-[#8bcfad] text-green-800 md:h-row-span-1 md:h-full",
+    image: "/bento-info/no-experience.webp",
+    imageClass: "w-3/4 h-auto object-contain mb-4",
+    link: "/", // 👈 EDITA AQUÍ: Agrega tu URL para "sin experiencia"
+    track: "blog_interview_tips",
   },
 ];
 ---
 
 <SectionContainer>
-  <h2 class="pb-6 text-2xl">Preparete para ganar</h2>
-  <div class="grid grid-cols-1 gap-4">
+  <Subtitle>Prepárate para ganar</Subtitle>
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2 md:p-0">
     {
-      ARTICLES.map(({ class: className, title, contenId }) => (
-        <button
-          class:list={[
-            "flex aspect-square h-full w-full justify-start rounded-2xl p-4 transition hover:scale-105",
-            className,
-          ]}
-        >
-          <span class="text-left text-2xl font-medium text-pretty">
-            {title}
-          </span>
-        </button>
-      ))
+      ARTICLES.map(
+        ({
+          class: className,
+          title,
+          contentId,
+          image,
+          imageClass,
+          link,
+          track,
+        }) => (
+          <a
+            href={link}
+            class:list={[
+              "group relative aspect-square h-full w-full overflow-hidden rounded-2xl",
+              className,
+            ]}
+            data-track={track}
+          >
+            <div
+              class:list={[
+                "absolute inset-0 flex overflow-hidden p-0",
+                contentId === "selection-process"
+                  ? "items-end justify-center md:items-stretch md:justify-end"
+                  : "",
+                contentId === "emergent-positions"
+                  ? "items-start md:items-center"
+                  : "",
+                contentId === "no-experience"
+                  ? "items-end justify-center"
+                  : "items-end justify-end",
+              ]}
+            >
+              <img
+                src={image}
+                alt=""
+                class:list={[
+                  "transition-transform duration-300 ease-in-out group-hover:scale-110",
+                  imageClass,
+                  contentId === "selection-process"
+                    ? "max-h-[70%] md:h-full md:max-h-none md:w-auto md:pr-0"
+                    : "",
+                ]}
+              />
+            </div>
+            <div class="absolute inset-0 z-10 flex flex-col items-start justify-start p-4">
+              <span class="tracking-separated pr-3 text-left text-3xl font-medium text-pretty md:max-w-64">
+                {title}
+              </span>
+            </div>
+          </a>
+        ),
+      )
     }
   </div>
 </SectionContainer>
