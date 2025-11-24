@@ -1,0 +1,209 @@
+---
+import SectionContainer from "./SectionContainer.astro";
+import TiktokVideo from "./TiktokVideo.astro";
+import Icon from "./ui/Icon.astro";
+import Subtitle from "./Subtitle.astro";
+
+const VIDEOS = [
+  // Datos de los videos que se mostrarán en el carrusel
+  {
+    videoId: "7222709244125007109",
+    thumbnailUrl: "/img/thumbnails/ibai.webp",
+    title: "La relación de Ibai con Marcos",
+  },
+  {
+    videoId: "7258016065563807003",
+    thumbnailUrl: "/img/thumbnails/jijantes.webp",
+    title: "Fichaje del nuevo reportero de Jijantes",
+  },
+  {
+    videoId: "7343332399662533920",
+    thumbnailUrl: "/img/thumbnails/midudev.webp",
+    title: "Fichajes de la web de La Velada junto a Midudev",
+  },
+  {
+    videoId: "7265231719068880160",
+    thumbnailUrl: "/img/thumbnails/cristinini.webp",
+    title: "Ganadora de la Beca Infojobs Cristinini",
+  },
+  {
+    videoId: "7285448407756393761",
+    thumbnailUrl: "/img/thumbnails/marcos.webp",
+    title: "Entrevista a Marcos de Olañeta",
+  },
+] as const;
+---
+
+<SectionContainer class="px-0">
+  <div class="flex items-center justify-between pb-6 md:pb-12">
+    <Subtitle class="!pb-0">Trabaja con los mejores</Subtitle>
+
+    <div class="hidden items-center gap-x-4 md:flex">
+      <!-- Botón para retroceder en el carrusel -->
+      <button
+        class="rounded-full bg-[#E2E2E5] p-1 text-[#636365] opacity-45 transition-all enabled:hover:scale-110 enabled:active:scale-100"
+        id="left-button"
+        disabled="true"
+        aria-label="Ir al elemento anterior"
+      >
+        <Icon name="leftarrow" />
+      </button>
+      <!-- Botón para avanzar en el carrusel -->
+      <button
+        class="rounded-full bg-[#E2E2E5] p-1 text-[#636365] transition-all enabled:hover:scale-110 enabled:active:scale-100"
+        id="right-button"
+        aria-label="Ir al siguiente elemento"
+      >
+        <Icon name="rightarrow" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor principal del carrusel con variables CSS para controlar la opacidad de los bordes -->
+  <div
+    class="carousel-container relative -mr-4 pr-4 md:mr-0 md:pr-0"
+    id="carousel-container"
+    style="--left-opacity: 0; --right-opacity: 1;"
+  >
+    <!-- Área desplazable que contiene los videos. 'snap-x' permite que el scroll se ajuste a los elementos -->
+    <div
+      class="custom-scrollbar -mr-4 flex snap-x snap-mandatory gap-x-4 overflow-scroll pr-4 md:mr-0 md:gap-x-8 md:pr-0"
+      id="carousel"
+    >
+      {
+        // Iteramos sobre los datos para renderizar cada componente TiktokVideo
+        VIDEOS.map(({ videoId, thumbnailUrl, title }) => (
+          <TiktokVideo
+            videoId={videoId}
+            thumbnailUrl={thumbnailUrl}
+            title={title}
+          />
+        ))
+      }
+    </div>
+  </div>
+</SectionContainer>
+
+<style>
+  /* Ocultar la barra de desplazamiento nativa para un diseño más limpio */
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Efecto de desvanecimiento (gradiente blanco) en el lado izquierdo */
+  .carousel-container:before {
+    background-image: linear-gradient(to left, transparent, #fff);
+    content: "";
+    height: 570px;
+    left: 0;
+    opacity: var(--left-opacity);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+    width: 64px;
+    z-index: 10;
+  }
+
+  /* Efecto de desvanecimiento (gradiente blanco) en el lado derecho */
+  .carousel-container:after {
+    background-image: linear-gradient(to right, transparent, #fff);
+    content: "";
+    height: 570px;
+    opacity: var(--right-opacity);
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+    width: 64px;
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-container:before {
+      opacity: 0 !important;
+    }
+
+    .carousel-container:after {
+      opacity: 0 !important;
+    }
+  }
+</style>
+
+<script>
+  // Selección de elementos del DOM necesarios para la interactividad
+  const rightButton = document.querySelector(
+    "#right-button",
+  ) as HTMLButtonElement;
+  const leftButton = document.querySelector(
+    "#left-button",
+  ) as HTMLButtonElement;
+  const carousel = document.querySelector("#carousel") as HTMLDivElement;
+  const carouselContainer = document.querySelector(
+    "#carousel-container",
+  ) as HTMLDivElement;
+
+  // Manejador para desplazar el carrusel a la izquierda
+  leftButton.addEventListener("click", () => {
+    carousel.scrollTo({
+      left: carousel.scrollLeft - 320, // Desplaza 320px hacia atrás
+      behavior: "smooth",
+    });
+  });
+
+  // Manejador para desplazar el carrusel a la derecha
+  rightButton.addEventListener("click", () => {
+    carousel.scrollTo({
+      left: carousel.scrollLeft + 320, // Desplaza 320px hacia adelante
+      behavior: "smooth",
+    });
+  });
+
+  // Monitorizar el evento de scroll para actualizar el estado de la UI
+  carousel.addEventListener("scroll", () => {
+    const tolerance = 2; // Pequeña tolerancia para compensar errores de redondeo
+
+    // Función auxiliar para habilitar/deshabilitar botones visualmente y funcionalmente
+    const updateButtonState = (button: HTMLButtonElement, disable: boolean) => {
+      button.classList.toggle("opacity-45", disable);
+      button.disabled = disable;
+    };
+
+    // Función auxiliar para actualizar variables CSS de opacidad
+    const updateOpacity = (property: string, value: string) => {
+      carouselContainer.style.setProperty(property, value);
+    };
+
+    // Lógica para el botón izquierdo: deshabilitar si estamos al principio
+    if (carousel.scrollLeft <= tolerance) {
+      updateButtonState(leftButton, true);
+    } else {
+      updateButtonState(leftButton, false);
+    }
+
+    // Lógica para el botón derecho: deshabilitar si llegamos al final
+    if (
+      carousel.scrollLeft + carousel.clientWidth >=
+      carousel.scrollWidth - tolerance
+    ) {
+      updateButtonState(rightButton, true);
+      updateOpacity("--right-opacity", "0"); // Ocultar gradiente derecho al final
+    } else {
+      updateButtonState(rightButton, false);
+      updateOpacity("--right-opacity", "1");
+    }
+
+    // Controlar visibilidad del gradiente izquierdo
+    if (carousel.scrollLeft > tolerance) {
+      updateOpacity("--left-opacity", "1");
+    } else {
+      updateOpacity("--left-opacity", "0");
+    }
+  });
+</script>
